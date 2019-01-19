@@ -27,6 +27,7 @@ alert = #bd2c40
 
 [bar/top_bar]
 monitor = ${env:MONITOR:eDP1}
+;monitor = ${env:MONITOR:DP1}
 width = 100%
 height = 64
 radius = 0
@@ -54,12 +55,12 @@ module-margin-right = 2
 modules-left = i3
 ;modules-center = 
 modules-center = openweathermap-detailed
-modules-right = info-redshift-temp xbacklight pulseaudio xkeyboard date time
+modules-right = info-redshift-temp xbacklight pulseaudio key date time
 
 [bar/bottom_bar]
 bottom = true
 
-monitor = ${env:MONITOR:eDP1}
+monitor = ${env:eMONITOR:eDP1}
 width = 100%
 height = 64
 radius = 0
@@ -114,40 +115,57 @@ label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
 
+click-left = setxkbmap sk 
+click-right = setxkbmap us
+
 [module/i3]
 type = internal/i3
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
+ws-icon-default = 
+
 format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
 
 ; Only show workspaces on the same output as the bar
-;pin-workspaces = true
+pin-workspaces = true
 
 label-mode-padding = 2
 label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 
 ; focused = Active workspace on focused monitor
-label-focused = %index%
+label-focused = %index% %icon%
 label-focused-background = ${module/bspwm.label-focused-background}
 label-focused-padding = ${module/bspwm.label-focused-padding}
 
 ; unfocused = Inactive workspace on any monitor
-label-unfocused = %index%
+label-unfocused = %index% %icon%
 label-unfocused-padding = ${module/bspwm.label-occupied-padding}
 
 ; visible = Active workspace on unfocused monitor
-label-visible = %index%
+label-visible = %index% %icon%
 label-visible-background = ${self.label-focused-background}
 label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
-label-urgent = %index%
+label-urgent = %index% %icon%
 label-urgent-background = ${module/bspwm.label-urgent-background}
 label-urgent-padding = ${module/bspwm.label-urgent-padding}
 
 ; Separator in between workspaces
 ; label-separator = |
+
 
 [module/bspwm]
 type = internal/bspwm
@@ -173,8 +191,9 @@ label-empty-padding = 2
 [module/xbacklight]
 type = internal/xbacklight
 
-format = <label> <bar>
-label = 
+;format = <label> <bar>
+format = <label>
+label =  %percentage%%
 
 bar-width = 10
 bar-indicator = |
@@ -262,7 +281,8 @@ label = %time%
 [module/pulseaudio]
 type = internal/pulseaudio
 
-format-volume = <label-volume> <bar-volume>
+;format-volume = <label-volume> <bar-volume>
+format-volume = <label-volume>
 label-volume =  %percentage%%
 label-volume-foreground = ${root.foreground}
 
@@ -399,5 +419,16 @@ exec = /bin/bash /home/ali/.config/polybar/scripts/arc.sh
 type = custom/script
 exec = /bin/bash /home/ali/.config/polybar/scripts/info-redshift-temp.sh
 interval = 3
-click-left = redshift -l 48:17
+;click-left = redshift -l 48:17
 click-right = killall redshift
+
+[module/key]
+type = custom/script
+interval = 0.5
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix = " "     
+format = <label>
+exec = setxkbmap -print -verbose 10 | grep layout | awk '{print $2}'
+
+click-left = setxkbmap sk
+click-right = setxkbmap us

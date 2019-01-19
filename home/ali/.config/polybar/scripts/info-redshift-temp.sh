@@ -13,5 +13,6 @@ if [ "$(pgrep -x redshift)" ]; then
         echo "%{F#D08770} "
     fi
 else
-    echo ""
+#    echo ""
+    echo ""
 fi

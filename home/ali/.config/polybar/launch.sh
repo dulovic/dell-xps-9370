@@ -7,7 +7,11 @@ killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 # Launch Polybar, using default config location ~/.config/polybar/config
-polybar top_bar &
+for m in $(polybar --list-monitors | cut -d":" -f1); do
+    MONITOR=$m polybar --reload top_bar &
+done
+
+#polybar top_bar &
 polybar bottom_bar &
 
 echo "Polybar launched..."
